@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600&display=swap');
+
+:root {
+    --ara-red: #ff003c;
+    --ara-dark: #0a0002;
+    --ara-gold: #fcee0a;
+    --nulo-cyan: #aaddff;
+    --void-black: #000000;
+}
+
+body {
+    background-color: #000;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Share Tech Mono', monospace;
+    user-select: none;
+    transition: background-color 3s ease;
+}
+
+/* --- FASE 1: MANTIDA IGUAL --- */
+#phase-breach {
+    width: 100%; height: 100%;
+    display: flex; justify-content: center; align-items: center;
+    background: radial-gradient(circle, var(--ara-dark) 40%, #000 100%);
+    color: var(--ara-red);
+    position: relative;
+    transition: opacity 2s ease;
+}
+#phase-breach::before {
+    content: " "; position: absolute; top:0; left:0; width:100%; height:100%;
+    background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.25) 50%),
+                linear-gradient(90deg, rgba(255,0,0,0.06), rgba(0,0,0,0.02), rgba(0,0,255,0.06));
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none; z-index: 2;
+}
+.game-interface {
+    width: 800px; max-width: 95%;
+    border: 2px solid var(--ara-red);
+    padding: 30px;
+    background: rgba(10, 0, 0, 0.9);
+    box-shadow: 0 0 40px rgba(255, 0, 60, 0.15);
+    z-index: 10;
+    display: flex; flex-direction: column; gap: 20px;
+}
+.header-bar {
+    border-bottom: 2px solid var(--ara-red);
+    display: flex; justify-content: space-between;
+    padding-bottom: 10px; font-size: 1.5rem; letter-spacing: 3px;
+}
+.puzzle-container {
+    height: 300px;
+    border: 1px solid rgba(255, 0, 60, 0.3);
+    background: rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+    display: flex; justify-content: center; align-items: center;
+}
+.sync-overlay {
+    position: absolute; width: 100%; height: 40px;
+    border-top: 2px solid var(--ara-gold);
+    border-bottom: 2px solid var(--ara-gold);
+    background: rgba(252, 238, 10, 0.1);
+    top: 50%; transform: translateY(-50%);
+    z-index: 5; pointer-events: none;
+    box-shadow: 0 0 15px rgba(252, 238, 10, 0.2);
+}
+.sync-bars-wrapper { display: flex; gap: 20px; height: 100%; align-items: center; z-index: 10; }
+.sync-column {
+    width: 60px; height: 100%;
+    background: rgba(20, 0, 0, 0.5);
+    border: 1px solid var(--ara-red);
+    position: relative; cursor: pointer; overflow: hidden; transition: 0.2s;
+}
+.sync-column:hover { border-color: #fff; }
+.sync-block {
+    width: 100%; height: 40px;
+    background: var(--ara-red);
+    position: absolute;
+    box-shadow: 0 0 15px var(--ara-red);
+}
+.sync-column.locked { border-color: var(--ara-gold); pointer-events: none; }
+.sync-column.locked .sync-block {
+    background: var(--ara-gold);
+    box-shadow: 0 0 20px var(--ara-gold);
+    top: 50% !important; transform: translateY(-50%);
+}
+.info-panel { display: flex; justify-content: space-between; align-items: flex-end; }
+.status-box { width: 40%; }
+.label { font-size: 0.7rem; opacity: 0.7; display: block; margin-bottom: 5px; }
+.progress-bar { width: 100%; height: 10px; background: #33000a; border: 1px solid var(--ara-red); }
+#progress-fill { width: 0%; height: 100%; background: var(--ara-gold); transition: width 0.3s; }
+.timer-val { font-size: 2.5rem; font-weight: bold; }
+.log-window { width: 30%; font-size: 0.7rem; color: rgba(255, 0, 60, 0.7); text-align: right; }
+
+/* --- FASE 2: O VAZIO (Melhorada) --- */
+#phase-nulo {
+    display: none; position: fixed; top:0; left:0; width:100%; height:100%;
+    background: radial-gradient(circle at center, #001220 0%, #000 100%);
+    color: var(--nulo-cyan);
+    font-family: 'Rajdhani', sans-serif;
+    flex-direction: column; justify-content: center; align-items: center;
+    opacity: 0; transition: opacity 3s ease; z-index: 20;
+}
+
+.nulo-content {
+    width: 800px; max-width: 90%; text-align: center;
+    opacity: 0; transition: opacity 2s ease;
+    z-index: 30; /* Fica acima das partículas, mas abaixo da corrupção final */
+}
+
+.nulo-icon {
+    font-size: 4rem; margin-bottom: 30px;
+    animation: breathe 5s infinite; text-shadow: 0 0 30px var(--nulo-cyan);
+}
+
+.dialogue-text {
+    font-size: 1.8rem; 
+    line-height: 1.6;
+    min-height: 120px;
+    margin-bottom: 40px; 
+    font-weight: 400;
+    text-shadow: 0 0 10px rgba(170, 221, 255, 0.4);
+    position: relative;
+}
+
+.choices-container {
+    display: flex; flex-direction: column; gap: 15px; opacity: 0; transition: opacity 1s;
+}
+
+.choice-btn {
+    background: transparent;
+    border: 1px solid rgba(170, 221, 255, 0.3);
+    color: var(--nulo-cyan);
+    padding: 15px 20px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.3rem;
+    cursor: pointer;
+    text-transform: uppercase; letter-spacing: 2px;
+    transition: 0.3s;
+}
+.choice-btn:hover {
+    background: rgba(170, 221, 255, 0.1);
+    letter-spacing: 4px; border-color: #fff; color: #fff;
+    box-shadow: 0 0 20px rgba(170, 221, 255, 0.2);
+}
+
+/* Botão de Destruição */
+.choice-btn.destroy { 
+    border-color: #ff3333; color: #ff3333; font-weight: bold;
+    animation: pulse-red 2s infinite ease-in-out;
+}
+.choice-btn.destroy:hover { 
+    background: rgba(255, 0, 0, 0.2); 
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.6); 
+}
+
+/* --- EFEITOS DE GLITCH MELHORADOS --- */
+.dynamic-glitch {
+    display: inline-block;
+    color: #fff;
+    font-weight: bold;
+    position: relative;
+}
+
+/* Efeito de "fatiamento" na tela durante o erro crítico */
+.critical-error {
+    animation: chromatic-aberration 3s infinite;
+}
+
+.critical-error .nulo-content {
+    animation: slight-shake 0.2s infinite;
+}
+
+/* Animações Suaves */
+@keyframes breathe { 0%,100%{opacity:0.6;} 50%{opacity:1; transform: scale(1.05);} }
+@keyframes pulse-red { 0%{opacity:0.7; text-shadow: 0 0 5px red;} 50%{opacity:1; text-shadow: 0 0 20px red;} 100%{opacity:0.7; text-shadow: 0 0 5px red;} }
+
+/* Aberração Cromática Lenta e Pesada */
+@keyframes chromatic-aberration {
+    0% { text-shadow: 2px 0 red, -2px 0 cyan; }
+    25% { text-shadow: -2px 0 red, 2px 0 cyan; }
+    50% { text-shadow: 2px 0 red, -2px 0 cyan; }
+    75% { text-shadow: -2px 0 red, 2px 0 cyan; }
+    100% { text-shadow: 2px 0 red, -2px 0 cyan; }
+}
+
+@keyframes slight-shake {
+    0% { transform: translate(1px, 1px); }
+    50% { transform: translate(-1px, -1px); }
+    100% { transform: translate(1px, 1px); }
+}
+
+/* --- CORRUPÇÃO FINAL (O VAZIO LÍQUIDO) --- */
+/* Isso cria bolhas de tinta preta que consomem a tela */
+.void-blob {
+    position: fixed;
+    border-radius: 50%;
+    background: #000;
+    /* O blur alto faz parecer líquido/fumaça */
+    filter: blur(20px) contrast(1.5);
+    z-index: 9000;
+    transform: scale(0);
+    animation: expand-void 4s forwards cubic-bezier(0.1, 0.8, 0.2, 1);
+    box-shadow: 0 0 50px #000;
+}
+
+@keyframes expand-void {
+    0% { transform: scale(0); opacity: 0.8; }
+    100% { transform: scale(5); opacity: 1; }
+}
+
+/* Tela Preta Final */
+#final-blackout {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 3s ease-in;
+}
+
+#fail-modal { display: none; position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:50; flex-direction: column; justify-content:center; align-items:center; color: var(--ara-red); }
+.retry-btn { margin-top: 20px; padding: 10px 30px; background: transparent; border: 1px solid var(--ara-red); color: var(--ara-red); cursor: pointer; font-family: inherit; font-size: 1.2rem; }
+
+/* --- PARTÍCULAS (O Fundo em Movimento) --- */
+.particle {
+    /* O JS já define posição e tamanho, mas isso garante o comportamento base */
+    position: absolute;
+    pointer-events: none;
+    z-index: 1; /* Garante que fiquem atrás do texto */
+}
+
+@keyframes floatUp {
+    0% { 
+        transform: translateY(110vh); 
+        opacity: 0; 
+    }
+    20% {
+        opacity: 0.5;
+    }
+    80% {
+        opacity: 0.5;
+    }
+    100% { 
+        transform: translateY(-10vh); 
+        opacity: 0; 
+    }
+}

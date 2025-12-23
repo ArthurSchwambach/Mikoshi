@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIKOSHI: SINGULARIDADE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <audio id="bgm-audio" src="audio.mp3" preload="auto"></audio>
+
+    <div id="phase-breach">
+        <div class="game-interface">
+            <div class="header-bar">
+                <div class="glitch-text">MIKOSHI::NEURAL_SYNC</div>
+                <div style="font-size: 0.8rem; align-self: center; color: var(--ara-red);">STATUS: INSTÁVEL</div>
+            </div>
+
+            <div class="puzzle-container">
+                <div class="sync-overlay"></div> <div class="sync-bars-wrapper" id="sync-wrapper">
+                    </div>
+            </div>
+
+            <div class="info-panel">
+                <div class="status-box">
+                    <span class="label">INTEGRIDADE DO ENGRAMA</span>
+                    <div class="progress-bar"><div id="progress-fill"></div></div>
+                </div>
+
+                <div class="timer-box">
+                    <span class="label">FALHA EMINENTE EM</span>
+                    <span class="timer-val" id="timer">20.00</span>
+                </div>
+
+                <div class="log-window" id="logs">
+                    > CONEXÃO INICIADA...<br>> ALINHE AS FREQUÊNCIAS NEURAIS.
+                </div>
+            </div>
+        </div>
+
+        <div id="fail-modal">
+            <h1 class="fail-title">DISSOCIAÇÃO COGNITIVA</h1>
+            <p>O ENGRAMA FOI CORROMPIDO.</p>
+            <button onclick="location.reload()" class="retry-btn">REINICIAR IMERSÃO</button>
+        </div>
+    </div>
+
+    <div id="phase-nulo">
+        <div id="particles-container"></div>
+
+        <div class="nulo-content" id="nulo-content-box">
+            <div class="nulo-icon">∅</div>
+            
+            <div class="dialogue-area">
+                <div class="dialogue-text">
+                    <span id="nulo-text"></span><span class="cursor"></span>
+                </div>
+            </div>
+
+            <div class="choices-container" id="nulo-choices"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
